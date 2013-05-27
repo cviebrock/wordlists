@@ -12,7 +12,8 @@ class BaseWordModel extends Eloquent {
 
 		$attributes = array(
 			'word' => $word,
-			'length' => Str::length( $word ),
+			// 'length' => Str::length( $word ),
+			'length' => strlen( $word ),
 			'alphagram' => Wordlist::alphagram( $word)
 		);
 
