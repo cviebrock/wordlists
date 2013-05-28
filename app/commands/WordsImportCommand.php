@@ -54,15 +54,42 @@ class WordsImportCommand extends Command {
 			return false;
 		}
 
-		$this->info("Reading $filename");
+		$this->info("Importing $filename");
+
+		$c = 0;
+		$wordlist = [];
+		/* hack */
+		$table = new Word; $table = $table->getTable();
+
+		$base = array_fill_keys(Word::$letters, 0);
 
 		$spl = new SplFileObject( $filename, 'r');
-		$i = 0;
-		while (!$spl->eof() && $i++ < 20) {
+
+		DB::statement("BEGIN EXCLUSIVE TRANSACTION");
+
+		while (!$spl->eof()) {
+
+	    if ($c++ % 100 == 0) {
+    		echo ".";
+	    }
+
+	    if ($c % 2000 == 0) {
+    		echo " $c\n";
+				DB::statement("COMMIT");
+				DB::statement("BEGIN EXCLUSIVE TRANSACTION");
+	    }
+
+
 	    $word = Str::lower(trim($spl->current()));
-	    Word::createNew( $word );
- 			$spl->next();
- 		}
+	    $word = Word::createNew( $word );
+	    $word->save();
+			$spl->next();
+		}
+
+		DB::statement("COMMIT");
+
+
+		$this->info("Finished importing $c words.");
 
 
 	}
