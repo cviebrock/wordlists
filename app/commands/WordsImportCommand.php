@@ -69,20 +69,20 @@ class WordsImportCommand extends Command {
 
 		while (!$spl->eof()) {
 
-	    if ($c++ % 100 == 0) {
-    		echo ".";
-	    }
+			if ($c++ % 100 == 0) {
+				echo ".";
+			}
 
-	    if ($c % 2000 == 0) {
-    		echo " $c\n";
+			if ($c % 2000 == 0) {
+				echo " $c\n";
 				DB::statement("COMMIT");
 				DB::statement("BEGIN EXCLUSIVE TRANSACTION");
-	    }
+			}
 
 
-	    $word = Str::lower(trim($spl->current()));
-	    $word = Word::createNew( $word );
-	    $word->save();
+			$word = Str::lower(trim($spl->current()));
+			$word = Word::createNew( $word );
+			$word->save();
 			$spl->next();
 		}
 
