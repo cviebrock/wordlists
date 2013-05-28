@@ -63,18 +63,15 @@ class WordsImportCommand extends Command {
 
 		$spl = new SplFileObject( $filename, 'r');
 
-		DB::statement("BEGIN EXCLUSIVE TRANSACTION");
+		DB::statement("LOCK TABLES `?` WRITE", array($table) );
 
 		while (!$spl->eof()) {
 
-			if ($c++ % 100 == 0) {
+			if (++$c % 100 == 0) {
 				echo ".";
-			}
-
-			if ($c % 2000 == 0) {
-				echo " $c\n";
-				DB::statement("COMMIT");
-				DB::statement("BEGIN EXCLUSIVE TRANSACTION");
+				if ($c % 2000 == 0) {
+					echo " $c\n";
+				}
 			}
 
 
@@ -86,7 +83,7 @@ class WordsImportCommand extends Command {
 			$spl->next();
 		}
 
-		DB::statement("COMMIT");
+		DB::statement("UNLOCK TABLES");
 
 
 		$this->info("Finished importing $c words.");
