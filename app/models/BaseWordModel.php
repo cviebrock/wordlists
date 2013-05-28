@@ -11,7 +11,7 @@ class BaseWordModel extends Eloquent {
 	);
 
 
-	public static function createNew( $word )
+	public static function buildAttributes( $word )
 	{
 
 		$attributes = array(
@@ -24,7 +24,7 @@ class BaseWordModel extends Eloquent {
 
 		$attributes = array_merge( $attributes, $frequency );
 
-		return new static( $attributes );
+		return $attributes;
 
 	}
 

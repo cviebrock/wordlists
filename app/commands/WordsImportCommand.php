@@ -61,8 +61,6 @@ class WordsImportCommand extends Command {
 		/* hack */
 		$table = new Word; $table = $table->getTable();
 
-		$base = array_fill_keys(Word::$letters, 0);
-
 		$spl = new SplFileObject( $filename, 'r');
 
 		DB::statement("BEGIN EXCLUSIVE TRANSACTION");
@@ -81,8 +79,10 @@ class WordsImportCommand extends Command {
 
 
 			$word = Str::lower(trim($spl->current()));
-			$word = Word::createNew( $word );
-			$word->save();
+			$attributes = Word::buildAttributes( $word );
+
+			DB::table($table)->insert($attributes);
+
 			$spl->next();
 		}
 
