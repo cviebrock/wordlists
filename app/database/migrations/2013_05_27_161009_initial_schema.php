@@ -15,11 +15,11 @@ class InitialSchema extends Migration {
 		{
 			$table->increments('id');
 			$table->string('word',15)->unique();
-			$table->integer('length')->unsigned()->index();
+			$table->tinyInteger('length')->unsigned()->index();
 			$table->string('alphagram',15)->index();
 			foreach( Word::$letters as $letter )
 			{
-				$table->integer($letter)->unsigned()->index()->default(0);
+				$table->tinyInteger($letter)->unsigned()->default(0);
 			}
 		});
 	}
