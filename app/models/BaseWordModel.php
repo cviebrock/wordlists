@@ -11,7 +11,7 @@ class BaseWordModel extends Eloquent {
 	);
 
 
-	public static function buildAttributes( $word )
+	public static function buildAttributes( $word, $with_nulls = false )
 	{
 
 		$attributes = array(
@@ -20,7 +20,7 @@ class BaseWordModel extends Eloquent {
 			'alphagram' => Wordlist::alphagram( $word )
 		);
 
-		$frequency = Wordlist::letterFrequency( $word );
+		$frequency = Wordlist::letterFrequency( $word, static::$letters );
 
 		$attributes = array_merge( $attributes, $frequency );
 

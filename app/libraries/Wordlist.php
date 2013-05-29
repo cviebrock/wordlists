@@ -26,7 +26,7 @@ class Wordlist {
 	 * @param  string $word
 	 * @return array
 	 */
-	public static function letterFrequency( $word )
+	public static function letterFrequency( $word, $keys = array() )
 	{
 		$array = array_flip( static::wordToArray( $word ) );
 
@@ -40,6 +40,12 @@ class Wordlist {
 			}
 			$prev_n = $n;
 		}
+
+		if ( !empty( $keys ) ) {
+			$keys = array_fill_keys( $keys, 0 );
+			$array = array_merge( $keys, $array );
+		}
+
 
 		return $array;
 
