@@ -59,32 +59,33 @@ class WordsImportCommand extends Command {
 		$c = 0;
 		$wordlist = [];
 		/* hack */
-		$table = new Word; $table = $table->getTable();
+		$table = with( new Word )->getTable();
 
-		$spl = new SplFileObject( $filename, 'r');
+		$spl = new SPLFileObject( $filename );
 
-		DB::statement("LOCK TABLES `?` WRITE", array($table) );
+		DB::connection()->disableQueryLog();
 
-		while (!$spl->eof()) {
+		foreach( $spl as $line ) {
+
+			$word = Str::lower(trim( $line ));
+			$wordlist[] = Word::buildAttributes( $word, true );
 
 			if (++$c % 100 == 0) {
 				echo ".";
-				if ($c % 2000 == 0) {
+
+				DB::table($table)->insert($wordlist);
+				$wordlist = [];
+
+				if ($c % 1000 == 0) {
 					echo " $c\n";
 				}
+
 			}
 
-
-			$word = Str::lower(trim($spl->current()));
-			$attributes = Word::buildAttributes( $word );
-
-			DB::table($table)->insert($attributes);
-
-			$spl->next();
 		}
 
-		DB::statement("UNLOCK TABLES");
-
+		DB::table($table)->insert($wordlist);
+		echo " $c\n";
 
 		$this->info("Finished importing $c words.");
 
