@@ -13,13 +13,16 @@ class InitialSchema extends Migration {
 	{
 		Schema::create('words', function($table)
 		{
+
+			$table->engine = 'myisam';
+
 			$table->increments('id');
 			$table->string('word',15)->unique();
 			$table->tinyInteger('length')->unsigned()->index();
-			$table->string('alphagram',15)->index();
+			$table->string('alphagram',15);
 			foreach( Word::$letters as $letter )
 			{
-				$table->tinyInteger($letter)->unsigned()->default(0);
+				$table->tinyInteger($letter)->unsigned()->index()->default(0);
 			}
 		});
 	}
