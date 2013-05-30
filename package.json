@@ -1,18 +1,14 @@
 {
-	"name": "wordlists",
-	"version": "0.0.0",
-	"homepage": "https://github.com/cviebrock/wordlists",
-	"author": {
-		"name": "Colin Viebrock",
-		"email": "colin@viebrock.ca"
-	},
-	"devDependencies": {
-		"grunt": "latest",
-		"grunt-contrib-uglify": "latest",
-		"grunt-contrib-jshint": "latest",
-		"grunt-contrib-watch": "latest",
-		"grunt-contrib-concat": "latest",
-		"grunt-contrib-copy": "latest",
-		"grunt-contrib-qunit": "latest"
-	}
+  "name": "wordlists",
+  "version": "0.0.1",
+  "homepage": "https://github.com/cviebrock/wordlists",
+  "author": {
+    "name": "Colin Viebrock",
+    "email": "colin@viebrock.ca"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-less": "~0.5.2"
+  }
 }
