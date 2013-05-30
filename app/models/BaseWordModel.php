@@ -11,20 +11,32 @@ class BaseWordModel extends Eloquent {
 	);
 
 
-	public static function buildAttributes( $word, $with_nulls = false )
+	public static function make( $word )
 	{
+
+		$word = Str::lower($word);
+
+		$letters = str_split($word);
+		sort($letters);
+
+		$alphagram = join('', $letters);
 
 		$attributes = array(
 			'word'      => $word,
 			'length'    => Str::length( $word ),
-			'alphagram' => Wordlist::alphagram( $word )
+			'alphagram' => $alphagram,
 		);
 
-		$frequency = Wordlist::letterFrequency( $word, static::$letters );
+		foreach( static::$letters as $letter ) {
+			$pos = strpos($alphagram, $letter);
+			if ( $pos !== false ) {
+				$attributes[$letter] = strrpos($alphagram, $letter) - $pos + 1;
+			} else {
+				$attributes[$letter] = 0;
+			}
+		}
 
-		$attributes = array_merge( $attributes, $frequency );
-
-		return $attributes;
+		return new static( $attributes );
 
 	}
 

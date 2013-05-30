@@ -13,5 +13,21 @@
 
 Route::get('/', function()
 {
-	return View::make('home');
+
+	$output_formats = Helper::arrayToFormer( Wordlist::$output_formats );
+
+	return View::make('home', compact('output_formats'));
+});
+
+
+Route::post('/', function()
+{
+
+	$word = Word::make('scrabble');
+
+	print_r($word);
+
+
+	print_r(Input::all());
+	exit;
 });
